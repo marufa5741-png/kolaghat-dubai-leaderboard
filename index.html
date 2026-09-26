@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentBid — Own the #1 Spot</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #07090d;
+    --card: #0e1219;
+    --card2: #121722;
+    --border: #202734;
+    --text: #f4f7fb;
+    --muted: #8b95a7;
+    --green: #3cff9b;
+    --yellow: #ffd84d;
+    --red: #ff5572;
+    --blue: #5b8cff;
+}
+
+body {
+    background:
+        radial-gradient(circle at 50% -10%, rgba(60,255,155,.12), transparent 35%),
+        var(--bg);
+    color: var(--text);
+    font-family: Inter, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* NAV */
+
+nav {
+    height: 70px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    background: rgba(7,9,13,.8);
+    backdrop-filter: blur(15px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--green);
+}
+
+.nav-btn {
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: var(--card);
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* HERO */
+
+.hero {
+    text-align: center;
+    padding: 75px 20px 40px;
+}
+
+.badge {
+    display: inline-block;
+    border: 1px solid rgba(60,255,155,.3);
+    color: var(--green);
+    background: rgba(60,255,155,.06);
+    padding: 7px 13px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 7vw, 75px);
+    line-height: .95;
+    letter-spacing: -4px;
+    max-width: 850px;
+    margin: auto;
+}
+
+.hero h1 span {
+    color: var(--green);
+}
+
+.hero p {
+    max-width: 600px;
+    margin: 25px auto;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* TIMER */
+
+.timer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 30px auto;
+}
+
+.time-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 75px;
+    padding: 13px 5px;
+}
+
+.time-box strong {
+    display: block;
+    font-size: 24px;
+}
+
+.time-box small {
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+/* STATS */
+
+.stats {
+    max-width: 1000px;
+    margin: 20px auto 50px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 22px;
+    border-radius: 12px;
+}
+
+.stat small {
+    color: var(--muted);
+}
+
+.stat h2 {
+    margin-top: 7px;
+}
+
+/* LEADERBOARD */
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 0 20px 80px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-title h2 {
+    font-size: 21px;
+}
+
+.live {
+    color: var(--green);
+    font-size: 12px;
+}
+
+.board {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.board-header,
+.agent {
+    display: grid;
+    grid-template-columns: 70px 1fr 150px 150px;
+    align-items: center;
+    padding: 17px 22px;
+}
+
+.board-header {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+}
+
+.agent {
+    border-bottom: 1px solid var(--border);
+    transition: .2s;
+}
+
+.agent:hover {
+    background: rgba(255,255,255,.025);
+}
+
+.agent:last-child {
+    border-bottom: none;
+}
+
+.rank {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.rank.one {
+    color: var(--yellow);
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #202938, #10151e);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.agent-info {
+    display: flex;
+    align-items: center;
+}
+
+.agent-name {
+    font-weight: 700;
+}
+
+.agent-location {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.bid {
+    font-weight: 800;
+}
+
+.bid span {
+    color: var(--green);
+}
+
+.claim {
+    justify-self: end;
+    background: var(--green);
+    color: #03140b;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 7px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.claim:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(60,255,155,.2);
+}
+
+/* MODAL */
+
+.modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal {
+    width: 100%;
+    max-width: 420px;
+    background: #10151e;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 25px 80px rgba(0,0,0,.6);
+}
+
+.modal h2 {
+    margin-bottom: 8px;
+}
+
+.modal p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.input {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+    background: #090c11;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    outline: none;
+}
+
+.price-box {
+    margin-top: 18px;
+    background: rgba(60,255,155,.06);
+    border: 1px solid rgba(60,255,155,.2);
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.price-box small {
+    color: var(--muted);
+}
+
+.price-box strong {
+    display: block;
+    font-size: 26px;
+    color: var(--green);
+    margin-top: 3px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.cancel {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: white;
+}
+
+.pay {
+    background: var(--green);
+    border: none;
+    color: #03140b;
+}
+
+/* TOAST */
+
+.toast {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #151c27;
+    border: 1px solid var(--border);
+    padding: 13px 20px;
+    border-radius: 9px;
+    opacity: 0;
+    transition: .3s;
+    z-index: 200;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    nav {
+        padding: 0 20px;
+    }
+
+    .hero {
+        padding-top: 55px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .board-header {
+        display: none;
+    }
+
+    .agent {
+        grid-template-columns: 45px 1fr;
+        gap: 10px;
+        padding: 17px;
+    }
+
+    .bid {
+        grid-column: 2;
+    }
+
+    .claim {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .timer {
+        gap: 5px;
+    }
+
+    .time-box {
+        width: 65px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">Agent<span>Bid</span></div>
+    <button class="nav-btn" onclick="showToast('Leaderboard updates live.')">
+        How it works
+    </button>
+</nav>
+
+<section class="hero">
+
+    <div class="badge">● LIVE AUCTION</div>
+
+    <h1>
+        Become the <span>#1</span><br>
+        agent in your market.
+    </h1>
+
+    <p>
+        Real estate agents compete for the most visible position.
+        Place a higher bid, claim the top spot, and put your profile
+        in front of potential clients.
+    </p>
+
+    <div class="timer">
+
+        <div class="time-box">
+            <strong id="days">02</strong>
+            <small>Days</small>
+        </div>
+
+        <div class="time-box">
+            <strong id="hours">12</strong>
+            <small>Hours</small>
+        </div>
+
+        <div class="time-box">
+            <strong id="minutes">45</strong>
+            <small>Minutes</small>
+        </div>
+
+        <div class="time-box">
+            <strong id="seconds">00</strong>
+            <small>Seconds</small>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="stats">
+
+    <div class="stat">
+        <small>Total Bids</small>
+        <h2 id="totalBids">127</h2>
+    </div>
+
+    <div class="stat">
+        <small>Current #1 Bid</small>
+        <h2 id="topBid">$2,450</h2>
+    </div>
+
+    <div class="stat">
+        <small>Agents Competing</small>
+        <h2 id="agents">38</h2>
+    </div>
+
+</section>
+
+<main class="container">
+
+    <div class="section-title">
+        <h2>Live Leaderboard</h2>
+        <div class="live">● LIVE</div>
+    </div>
+
+    <div class="board">
+
+        <div class="board-header">
+            <div>Rank</div>
+            <div>Agent</div>
+            <div>Current Bid</div>
+            <div></div>
+        </div>
+
+        <div id="leaderboard">
+
+            <div class="agent">
+                <div class="rank one">01</div>
+
+                <div class="agent-info">
+                    <div class="avatar">JM</div>
+                    <div>
+                        <div class="agent-name">James Miller</div>
+                        <div class="agent-location">Miami, FL</div>
+                    </div>
+                </div>
+
+                <div class="bid">
+                    <span>$</span>2,450
+                </div>
+
+                <button class="claim"
+                    onclick="openModal('James Miller',2450)">
+                    Outbid
+                </button>
+            </div>
+
+            <div class="agent">
+                <div class="rank">02</div>
+
+                <div class="agent-info">
+                    <div class="avatar">SR</div>
+                    <div>
+                        <div class="agent-name">Sarah Reynolds</div>
+                        <div class="agent-location">Austin, TX</div>
+                    </div>
+                </div>
+
+                <div class="bid">$2,200</div>
+
+                <button class="claim"
+                    onclick="openModal('Sarah Reynolds',2200)">
+                    Outbid
+                </button>
+            </div>
+
+            <div class="agent">
+                <div class="rank">03</div>
+
+                <div class="agent-info">
+                    <div class="avatar">DL</div>
+                    <div>
+                        <div class="agent-name">Daniel Lee</div>
+                        <div class="agent-location">Los Angeles, CA</div>
+                    </div>
+                </div>
+
+                <div class="bid">$1,950</div>
+
+                <button class="claim"
+                    onclick="openModal('Daniel Lee',1950)">
+                    Outbid
+                </button>
+            </div>
+
+            <div class="agent">
+                <div class="rank">04</div>
+
+                <div class="agent-info">
+                    <div class="avatar">AW</div>
+                    <div>
+                        <div class="agent-name">Amanda Wilson</div>
+                        <div class="agent-location">Denver, CO</div>
+                    </div>
+                </div>
+
+                <div class="bid">$1,700</div>
+
+                <button class="claim"
+                    onclick="openModal('Amanda Wilson',1700)">
+                    Outbid
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- MODAL -->
+
+<div class="modal-bg" id="modal">
+
+    <div class="modal">
+
+        <h2>Claim the #1 Spot</h2>
+
+        <p>
+            Your bid must be higher than the current leader's bid.
+        </p>
+
+        <input
+            class="input"
+            id="agentName"
+            placeholder="Your name">
+
+        <div class="price-box">
+            <small>Minimum bid</small>
+            <strong id="minimumBid">$2,500</strong>
+        </div>
+
+        <input
+            class="input"
+            id="bidAmount"
+            type="number"
+            placeholder="Enter your bid">
+
+        <div class="modal-actions">
+
+            <button
+                class="cancel"
+                onclick="closeModal()">
+                Cancel
+            </button>
+
+            <button
+                class="pay"
+                onclick="placeBid()">
+                Continue to Payment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* -------------------------
+   COUNTDOWN
+------------------------- */
+
+let endTime = Date.now() + (2 * 24 * 60 * 60 * 1000)
+                      + (12 * 60 * 60 * 1000);
+
+function updateTimer() {
+
+    let distance = endTime - Date.now();
+
+    if (distance <= 0) {
+        endTime = Date.now() + 48 * 60 * 60 * 1000;
+        distance = endTime - Date.now();
+    }
+
+    let days = Math.floor(distance / 86400000);
+    let hours = Math.floor((distance % 86400000) / 3600000);
+    let minutes = Math.floor((distance % 3600000) / 60000);
+    let seconds = Math.floor((distance % 60000) / 1000);
+
+    document.getElementById("days").textContent =
+        String(days).padStart(2,"0");
+
+    document.getElementById("hours").textContent =
+        String(hours).padStart(2,"0");
+
+    document.getElementById("minutes").textContent =
+        String(minutes).padStart(2,"0");
+
+    document.getElementById("seconds").textContent =
+        String(seconds).padStart(2,"0");
+}
+
+setInterval(updateTimer,1000);
+updateTimer();
+
+
+/* -------------------------
+   MODAL
+------------------------- */
+
+let currentTopBid = 2450;
+
+function openModal(name,bid) {
+
+    currentTopBid = bid;
+
+    document.getElementById("minimumBid").textContent =
+        "$" + (bid + 50).toLocaleString();
+
+    document.getElementById("bidAmount").value =
+        bid + 50;
+
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+
+/* -------------------------
+   PLACE BID
+------------------------- */
+
+function placeBid() {
+
+    let name =
+        document.getElementById("agentName").value.trim();
+
+    let amount =
+        Number(document.getElementById("bidAmount").value);
+
+    if (!name) {
+        showToast("Please enter your name.");
+        return;
+    }
+
+    if (amount <= currentTopBid) {
+        showToast(
+            "Your bid must be higher than $" +
+            currentTopBid.toLocaleString()
+        );
+        return;
+    }
+
+    closeModal();
+
+    document.getElementById("topBid").textContent =
+        "$" + amount.toLocaleString();
+
+    document.getElementById("totalBids").textContent =
+        Number(document.getElementById("totalBids").textContent) + 1;
+
+    showToast(
+        "Bid accepted! Payment checkout would open here."
+    );
+}
+
+
+/* -------------------------
+   TOAST
+------------------------- */
+
+function showToast(message) {
+
+    let toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    },3000);
+}
+
+
+/* -------------------------
+   DEMO LIVE ACTIVITY
+------------------------- */
+
+setInterval(() => {
+
+    let bid = Number(
+        document.getElementById("topBid")
+        .textContent
+        .replace("$","")
+        .replace(",","")
+    );
+
+    // Occasionally simulate another agent bidding
+    if (Math.random() > .72) {
+
+        bid += Math.floor(Math.random() * 100) + 25;
+
+        document.getElementById("topBid").textContent =
+            "$" + bid.toLocaleString();
+
+        document.getElementById("totalBids").textContent =
+            Number(
+                document.getElementById("totalBids").textContent
+            ) + 1;
+
+        showToast("Someone just placed a new bid!");
+    }
+
+},7000);
+
+</script>
+
+</body>
+  </html>
