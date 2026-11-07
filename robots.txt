@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kolaghat-dubai-leaderboard.vercel.app/sitemap.xml
